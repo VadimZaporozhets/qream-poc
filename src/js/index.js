@@ -3,7 +3,7 @@ import * as dat from 'dat.gui';
 
 import { createScene, createLights } from './ParticlesDemo/scene';
 import { initLoader } from './ParticlesDemo/particlesLoader';
-import { createLogo } from './ParticlesDemo/particlesLogo';
+import { createLogo, animateLogo } from './ParticlesDemo/particlesLogo';
 
 const gui = new dat.GUI();
 
@@ -19,6 +19,8 @@ const init = async () => {
 
     createLogo(particlesData, scene);
 
+    animateLogo();
+
     window.addEventListener('resize', handleWindowResize);
 
     render();
@@ -29,6 +31,8 @@ const render = time => {
     controls.update();
     stats.update();
     TWEEN.update();
+
+    // animateLogo(time);
 
     requestAnimationFrame(render);
 };

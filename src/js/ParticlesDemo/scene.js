@@ -23,7 +23,7 @@ export const createScene = (WIDTH, HEIGHT) => {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = PCFSoftShadowMap;
 
-    camera.position.set(0, 0, 35);
+    camera.position.set(0, 40, 500);
     camera.lookAt(0, 0, 0);
 
     // gui.add(camera.position, 'x', -100, 100)

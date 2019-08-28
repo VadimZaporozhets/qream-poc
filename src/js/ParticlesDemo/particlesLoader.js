@@ -1,10 +1,10 @@
-const size = 50;
+const size = 150;
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
 canvas.width = size;
 canvas.height = size;
 canvas.classList.add('tempcanvas');
-const maxPointsPerImage = 30000;
+const maxPointsPerImage = 15000;
 
 //Array full of images data where all points of all images located
 const gallery = [];
@@ -68,8 +68,11 @@ const getImageData = image => {
             // const blue = data[((size * y) + x) * 4 + 2];
             const alpha = data[(size * y + x) * 4 + 3];
 
+            const coordX = 5 * (x - size / 2);
+            const coordY = 5 * (size / 2 - y);
+
             if (alpha > 0) {
-                imageCoords.push([10 * (x - size / 2), 10 * (size / 2 - y)]);
+                imageCoords.push([coordX, coordY]);
             }
         }
     }

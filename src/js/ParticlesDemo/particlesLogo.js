@@ -6,28 +6,69 @@ import {
     VertexColors,
     Color
 } from 'three';
+import { Tween, Easing } from '@tweenjs/tween.js';
+
+let geometry, verticesLength;
 
 export const createLogo = (pointsData, scene) => {
     const imageData = pointsData[0];
     const material = new PointsMaterial({
         vertexColors: VertexColors,
         color: 0xffffff,
-        size: 2
+        size: 1
     });
-    const geometry = new Geometry();
+    geometry = new Geometry();
 
     imageData.forEach(point => {
         geometry.vertices.push(
-            new Vector3(point[0], point[1], Math.random() * 10)
+            new Vector3(point[0], point[1], Math.random() * 15)
         );
         geometry.colors.push(
-            new Color(Math.random(), Math.random(), Math.random())
+            // new Color(Math.random(), Math.random(), Math.random())
+            new Color(1, 1, 1)
         );
     });
 
+    verticesLength = geometry.vertices.length;
+
     const pointsLogo = new Points(geometry, material);
 
-    console.log(scene);
-
     scene.add(pointsLogo);
+};
+
+let direction = true;
+
+const onUpdateParticles = ({ range }) => {
+    for (let i = 0; i < verticesLength; i++) {
+        const noise = direction ? Math.sin(i / 2) : -Math.sin(i / 2);
+        const dX = range / 10 + noise;
+        // const dX = Math.sin(time / 1000 + i / 2) / 2;
+        const dY = 0;
+        const dZ = 0;
+
+        geometry.vertices[i].add(new Vector3(dX, dY, dZ));
+    }
+    geometry.verticesNeedUpdate = true;
+};
+
+export const animateLogo = time => {
+    const logoTimeline = new Tween({
+        range: 0
+    })
+        .to(
+            {
+                range: 1
+            },
+            1000
+        )
+        .to({ range: 0 }, 500)
+        .easing(Easing.Back.InOut)
+        .delay(2000)
+        .repeatDelay(550)
+        .repeat(Infinity)
+        .onRepeat(() => {
+            direction = !direction;
+        })
+        .onUpdate(onUpdateParticles)
+        .start();
 };
