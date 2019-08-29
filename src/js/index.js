@@ -1,4 +1,3 @@
-import TWEEN from '@tweenjs/tween.js';
 import * as dat from 'dat.gui';
 
 import { createScene, createLights } from './ParticlesDemo/scene';
@@ -30,7 +29,6 @@ const render = time => {
     renderer.render(scene, camera);
     controls.update();
     stats.update();
-    TWEEN.update();
 
     // animateLogo(time);
 

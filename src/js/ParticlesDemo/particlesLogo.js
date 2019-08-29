@@ -6,7 +6,7 @@ import {
     VertexColors,
     Color
 } from 'three';
-import { Tween, Easing } from '@tweenjs/tween.js';
+import { TimelineMax } from 'gsap';
 
 let geometry, verticesLength;
 
@@ -36,12 +36,16 @@ export const createLogo = (pointsData, scene) => {
     scene.add(pointsLogo);
 };
 
-let direction = true;
+const animationObj = {
+    range: 0,
+    direction: -1
+};
 
-const onUpdateParticles = ({ range }) => {
+const onUpdateParticles = () => {
     for (let i = 0; i < verticesLength; i++) {
-        const noise = direction ? Math.sin(i / 2) : -Math.sin(i / 2);
-        const dX = range / 10 + noise;
+        const noise = animationObj.direction * Math.sin(i / 2);
+        // const noise = Math.sin(i / 2);
+        const dX = animationObj.range / 10 + noise;
         // const dX = Math.sin(time / 1000 + i / 2) / 2;
         const dY = 0;
         const dZ = 0;
@@ -52,23 +56,17 @@ const onUpdateParticles = ({ range }) => {
 };
 
 export const animateLogo = time => {
-    const logoTimeline = new Tween({
-        range: 0
+    const logoTimeline = new TimelineMax({
+        onUpdate: onUpdateParticles,
+        repeat: Infinity,
+        yoyo: true
     })
-        .to(
-            {
-                range: 1
-            },
-            1000
-        )
-        .to({ range: 0 }, 500)
-        .easing(Easing.Back.InOut)
-        .delay(2000)
-        .repeatDelay(550)
-        .repeat(Infinity)
-        .onRepeat(() => {
-            direction = !direction;
+        .to(animationObj, 1, {
+            range: 1,
+            direction: 1
         })
-        .onUpdate(onUpdateParticles)
-        .start();
+        .to(animationObj, 1, {
+            range: 0,
+            direction: -1
+        });
 };
