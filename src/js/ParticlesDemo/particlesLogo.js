@@ -4,18 +4,25 @@ import {
     Geometry,
     Vector3,
     VertexColors,
-    Color
+    Color,
+    TextureLoader
 } from 'three';
-import { TimelineMax } from 'gsap';
+import { TimelineMax, Power4, Linear } from 'gsap';
 
-let geometry, verticesLength;
+let geometry,
+    verticesLength,
+    deltas = [];
 
 export const createLogo = (pointsData, scene) => {
     const imageData = pointsData[0];
+    const texture = new TextureLoader().load('src/assets/halftone.png');
+
     const material = new PointsMaterial({
         vertexColors: VertexColors,
         color: 0xffffff,
-        size: 1
+        size: 4,
+        map: texture,
+        transparent: true
     });
     geometry = new Geometry();
 
@@ -25,9 +32,12 @@ export const createLogo = (pointsData, scene) => {
         );
         geometry.colors.push(
             // new Color(Math.random(), Math.random(), Math.random())
-            new Color(1, 1, 1)
+            new Color(0, 0, 0)
         );
+        deltas.push(Math.random() * 2 - 1);
     });
+
+    console.log(geometry.vertices);
 
     verticesLength = geometry.vertices.length;
 
@@ -37,15 +47,13 @@ export const createLogo = (pointsData, scene) => {
 };
 
 const animationObj = {
-    range: 0,
-    direction: -1
+    dX: -1
 };
 
 const onUpdateParticles = () => {
     for (let i = 0; i < verticesLength; i++) {
-        const noise = animationObj.direction * Math.sin(i / 2);
-        // const noise = Math.sin(i / 2);
-        const dX = animationObj.range / 10 + noise;
+        // const dX = (animationObj.dX / 2) * (Math.sin(i / 2) / 2);
+        const dX = (animationObj.dX / 5) * deltas[i];
         // const dX = Math.sin(time / 1000 + i / 2) / 2;
         const dY = 0;
         const dZ = 0;
@@ -55,18 +63,25 @@ const onUpdateParticles = () => {
     geometry.verticesNeedUpdate = true;
 };
 
-export const animateLogo = time => {
+export const animateLogo = () => {
     const logoTimeline = new TimelineMax({
         onUpdate: onUpdateParticles,
         repeat: Infinity,
-        yoyo: true
+        onRepeat: () => {
+            console.log(animationObj.dX);
+        },
+        ease: Linear
     })
         .to(animationObj, 1, {
-            range: 1,
-            direction: 1
+            dX: 1,
+            onComplete: () => {
+                console.log(animationObj.dX);
+            }
         })
         .to(animationObj, 1, {
-            range: 0,
-            direction: -1
+            dX: -1,
+            onComplete: () => {
+                console.log(animationObj.dX);
+            }
         });
 };

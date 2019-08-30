@@ -12,8 +12,8 @@ import Stats from 'stats.js';
 export const createScene = (WIDTH, HEIGHT) => {
     const canvas = document.getElementById('canvas');
     const renderer = new WebGLRenderer({
-        antialias: true
-        // alpha: true
+        antialias: true,
+        alpha: true
     });
     const scene = new Scene();
     const stats = new Stats();
