@@ -7,7 +7,7 @@ import {
     Color,
     TextureLoader
 } from 'three';
-import { TimelineMax, Power4, Linear } from 'gsap';
+import { TimelineMax, Power4, TweenLite } from 'gsap';
 
 let geometry,
     verticesLength,
@@ -15,14 +15,15 @@ let geometry,
 
 export const createLogo = (pointsData, scene) => {
     const imageData = pointsData[0];
-    const texture = new TextureLoader().load('src/assets/halftone.png');
+    // const texture = new TextureLoader().load('src/assets/sphere.png');
 
     const material = new PointsMaterial({
         vertexColors: VertexColors,
         color: 0xffffff,
         size: 4,
-        map: texture,
-        transparent: true
+        // map: texture,
+        transparent: true,
+        alphaTest: 0.01
     });
     geometry = new Geometry();
 
@@ -32,7 +33,7 @@ export const createLogo = (pointsData, scene) => {
         );
         geometry.colors.push(
             // new Color(Math.random(), Math.random(), Math.random())
-            new Color(0, 0, 0)
+            new Color(1, 1, 1)
         );
         deltas.push(Math.random() * 2 - 1);
     });
@@ -44,10 +45,12 @@ export const createLogo = (pointsData, scene) => {
     const pointsLogo = new Points(geometry, material);
 
     scene.add(pointsLogo);
+
+    return geometry;
 };
 
 const animationObj = {
-    dX: -1
+    dX: 0
 };
 
 const onUpdateParticles = () => {
@@ -67,21 +70,27 @@ export const animateLogo = () => {
     const logoTimeline = new TimelineMax({
         onUpdate: onUpdateParticles,
         repeat: Infinity,
-        onRepeat: () => {
-            console.log(animationObj.dX);
-        },
-        ease: Linear
+        ease: Power4.easeIn
     })
-        .to(animationObj, 1, {
-            dX: 1,
-            onComplete: () => {
-                console.log(animationObj.dX);
-            }
+        .to(animationObj, 1.5, {
+            dX: 4
         })
-        .to(animationObj, 1, {
-            dX: -1,
-            onComplete: () => {
-                console.log(animationObj.dX);
-            }
+        .to(animationObj, 1.5, {
+            dX: -4
+        })
+        .to(animationObj, 1.5, {
+            dX: 0.4
+        })
+        .to(animationObj, 1.5, {
+            dX: -0.4
+        })
+        .to(animationObj, 1.5, {
+            dX: 0.4
+        })
+        .to(animationObj, 1.5, {
+            dX: -0.4
+        })
+        .to(animationObj, 1.5, {
+            dX: 0
         });
 };

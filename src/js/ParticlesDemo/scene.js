@@ -4,10 +4,13 @@ import {
     AmbientLight,
     SpotLight,
     Scene,
-    PCFSoftShadowMap
+    PCFSoftShadowMap,
+    HemisphereLight
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Stats from 'stats.js';
+
+import gui from './dat';
 
 export const createScene = (WIDTH, HEIGHT) => {
     const canvas = document.getElementById('canvas');
@@ -23,7 +26,7 @@ export const createScene = (WIDTH, HEIGHT) => {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = PCFSoftShadowMap;
 
-    camera.position.set(0, 40, 500);
+    camera.position.set(0, 40, 650);
     camera.lookAt(0, 0, 0);
 
     // gui.add(camera.position, 'x', -100, 100)
@@ -37,7 +40,7 @@ export const createScene = (WIDTH, HEIGHT) => {
     return { scene, renderer, controls, stats, camera };
 };
 
-export const createLights = (scene, gui) => {
+export const createLights = scene => {
     const ambientLight = new AmbientLight(0xffffff, 0.3);
     const spotLight = new SpotLight(0xffffff, 1);
 
@@ -51,6 +54,8 @@ export const createLights = (scene, gui) => {
     spotLight.shadow.mapSize.height = 2048;
     spotLight.shadow.camera.near = 10;
     spotLight.shadow.camera.far = 200;
+
+    const hemisphereLight = new HemisphereLight(0xffffff, 0x0c056d, 0.4);
 
     gui.add(spotLight, 'intensity', 0, 2)
         .name('Spotlight intensity')
@@ -74,4 +79,5 @@ export const createLights = (scene, gui) => {
 
     scene.add(spotLight);
     scene.add(ambientLight);
+    scene.add(hemisphereLight);
 };

@@ -1,24 +1,25 @@
-import * as dat from 'dat.gui';
-
 import { createScene, createLights } from './ParticlesDemo/scene';
 import { initLoader } from './ParticlesDemo/particlesLoader';
 import { createLogo, animateLogo } from './ParticlesDemo/particlesLogo';
-
-const gui = new dat.GUI();
+import { Pulp } from './ParticlesDemo/bg-pulp';
 
 let WIDTH = window.innerWidth;
 let HEIGHT = window.innerHeight;
 
 const { scene, renderer, controls, stats, camera } = createScene(WIDTH, HEIGHT);
 
+let pulp1, pulp2;
+
 const init = async () => {
-    createLights(scene, gui);
+    createLights(scene);
 
     const particlesData = await initLoader();
 
     createLogo(particlesData, scene);
-
     animateLogo();
+
+    pulp1 = new Pulp(scene, 150, 0xdc0073, -350, 200, 20);
+    pulp2 = new Pulp(scene, 110, 0x95f9e3, 350, -200, 20);
 
     window.addEventListener('resize', handleWindowResize);
 
@@ -30,7 +31,11 @@ const render = time => {
     controls.update();
     stats.update();
 
+    // logoGeometry.
+
     // animateLogo(time);
+    pulp1.animatePulp(time);
+    pulp2.animatePulp(time);
 
     requestAnimationFrame(render);
 };
