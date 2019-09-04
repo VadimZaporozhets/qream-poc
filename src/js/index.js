@@ -1,6 +1,6 @@
 import { createScene, createLights } from './ParticlesDemo/scene';
 import { initLoader } from './ParticlesDemo/particlesLoader';
-import { createLogo, animateLogo } from './ParticlesDemo/particlesLogo';
+import { ParticlesLogo } from './ParticlesDemo/particlesLogo';
 import { Pulp } from './ParticlesDemo/bg-pulp';
 
 let WIDTH = window.innerWidth;
@@ -15,8 +15,8 @@ const init = async () => {
 
     const particlesData = await initLoader();
 
-    createLogo(particlesData, scene);
-    animateLogo();
+    const particlesLogo = new ParticlesLogo(particlesData, scene);
+    particlesLogo.animateLogo();
 
     pulp1 = new Pulp(scene, 150, 0xdc0073, -350, 200, 20);
     pulp2 = new Pulp(scene, 110, 0x95f9e3, 350, -200, 20);
