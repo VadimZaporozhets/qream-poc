@@ -65,25 +65,25 @@ export class ParticlesLogo {
             repeat: Infinity,
             ease: Power4.easeIn
         })
-            .to(this.animationObj, 1.5, {
+            .to(this.animationObj, 1.2, {
                 dX: 4
             })
-            .to(this.animationObj, 1.5, {
+            .to(this.animationObj, 1.2, {
                 dX: -4
             })
-            .to(this.animationObj, 1.5, {
+            .to(this.animationObj, 1.2, {
                 dX: 0.4
             })
-            .to(this.animationObj, 1.5, {
+            .to(this.animationObj, 1.2, {
                 dX: -0.4
             })
-            .to(this.animationObj, 1.5, {
+            .to(this.animationObj, 1.2, {
                 dX: 0.4
             })
-            .to(this.animationObj, 1.5, {
+            .to(this.animationObj, 1.2, {
                 dX: -0.4
             })
-            .to(this.animationObj, 1.5, {
+            .to(this.animationObj, 1.2, {
                 dX: 0
             });
     }

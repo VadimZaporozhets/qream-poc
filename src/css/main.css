@@ -7,16 +7,33 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+body.loading {
+    max-height: 100vh;
+    overflow: hidden;
+}
+
 #loader {
     position: fixed;
     width: 100vw;
     max-width: 100%;
     height: 100vh;
     z-index: 10000;
-    background: #2196f3;
+    background: #c2e59c; /* fallback for old browsers */
+    background: -webkit-linear-gradient(
+        to right,
+        #c2e59c,
+        #64b3f4
+    ); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #c2e59c, #64b3f4);
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: 2s;
+}
+
+.hidden#loader {
+    opacity: 0;
+    pointer-events: none;
 }
 
 #loader div {
