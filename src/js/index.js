@@ -2,6 +2,7 @@ import { createScene, createLights } from './ParticlesDemo/scene';
 import { initLoader } from './ParticlesDemo/particlesLoader';
 import { ParticlesLogo } from './ParticlesDemo/particlesLogo';
 import { Pulp } from './ParticlesDemo/bg-pulp';
+import { removeLoader } from './loader';
 
 let WIDTH = window.innerWidth;
 let HEIGHT = window.innerHeight;
@@ -22,6 +23,8 @@ const init = async () => {
     pulp2 = new Pulp(scene, 110, 0x95f9e3, 350, -200, 20);
 
     window.addEventListener('resize', handleWindowResize);
+
+    removeLoader();
 
     render();
 };
